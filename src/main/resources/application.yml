@@ -1,0 +1,22 @@
+spring:
+    application:
+        name: cloud-gateway
+    cloud:
+        gateway:
+            routes:
+            -   id: order_route
+                uri: lb://posp-order
+                predicates:
+                - Path=/order/**
+                filters:
+                -   RewritePath=/order/?(?<segment>.*), /${segment}
+        
+server:
+    port: 8002
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: ${EUREKA_URI:http://localhost:8001/eureka}
+    instance:
+        preferIpAddress: true
